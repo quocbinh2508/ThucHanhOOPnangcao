@@ -62,7 +62,6 @@ class StudentManager
             Console.WriteLine();
         }
     }
-
     public void GetAverageGrade()
     {
         double TotalGrade = 0;
