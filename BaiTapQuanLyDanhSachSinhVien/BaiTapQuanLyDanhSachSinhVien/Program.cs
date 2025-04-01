@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
 
+
 class Student
 {
     public string Name;
@@ -10,7 +11,7 @@ class Student
     public float DiemVan;
     public float DiemAnh;
 
-    public void Getresult()
+    public void GetGrade()
     {
         Grade = (DiemToan + DiemVan + DiemAnh)/3;
 
@@ -32,7 +33,7 @@ class Student
         }
     }
 
-    public void DisplayAllStudent()
+   public void DisplayAllStudent()
     {
         Console.WriteLine("Thong tin sinh vien: ");
         Console.WriteLine("Ten: " + Name);
@@ -43,16 +44,61 @@ class Student
     }
 }
 
+class StudentManager
+{
+    private List<Student> students = new List<Student>();
+
+    public void AddStudent(Student student)
+    {
+        students.Add(student);
+    }
+
+    public void DisplayAllStudent()
+    {
+        foreach (Student student in students)
+        {
+            student.DisplayAllStudent();
+            student.GetGrade();
+            Console.WriteLine();
+        }
+    }
+
+    public void GetAverageGrade()
+    {
+        double TotalGrade = 0;
+        foreach (Student student in students)
+        {
+            TotalGrade += student.Grade;
+        }
+
+        double averageGrade = TotalGrade / students.Count;
+        Console.WriteLine("Diem trung binh cua tat ca sinh vien: " + averageGrade);
+    }
+}
+
+
 class Program
 
 {
     public static void Main(string[] args)
     {
-        List<Student> Students = new List<Student>();
+        StudentManager studentManager = new StudentManager();
 
         Student student1 = new Student();
         Console.Write("Hay nhap ten sinh vien 1: ");
-        student1.Name = Console.ReadLine();
+        while (true)
+        {
+            student1.Name = Console.ReadLine();  // Nhập tên sinh viên
+            if (!string.IsNullOrEmpty(student1.Name))  // Kiểm tra xem tên có rỗng không
+            {
+                break;  // Nếu tên hợp lệ, thoát khỏi vòng lặp
+            }
+            else
+            {
+                Console.WriteLine("Ten sinh vien khong hop le. Vui long nhap lai!");
+                Console.Write("Hay nhap ten sinh vien 1: ");  // Yêu cầu nhập lại tên
+            }
+        }
         Console.Write("Hay nhap tuoi cua sinh vien 1: ");
         while (true)
         {
@@ -67,70 +113,28 @@ class Program
             }
         }
         Console.Write("Hay nhap diem toan cua sinh vien 1: ");
-        while (true)
-        {
-            if (float.TryParse(Console.ReadLine(), out student1.DiemToan)) // Kiểm tra xem có phải là số thực không
-            {
-                if (student1.DiemToan >= 0 && student1.DiemToan <= 10) // Kiểm tra xem điểm có trong khoảng 0-10 không
-                {
-                    break; // Nếu nhập hợp lệ, thoát khỏi vòng lặp
-                }
-                else
-                {
-                    Console.WriteLine("Diem Toan khong hop le. Vui long nhap lai (Diem Toan phai tu 0 den 10).");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Diem Toan khong hop le. Vui long nhap lai (Diem Toan phai la so).");
-            }
-            Console.Write("Hay nhap diem toan cua sinh vien 1: "); // Nếu không hợp lệ, yêu cầu nhập lại
-        }
+        student1.DiemToan = GetValidGrade();
         Console.Write("Hay nhap diem van cua sinh vien 1: ");
-        while (true)
-        {
-            if (float.TryParse(Console.ReadLine(), out student1.DiemVan)) // Kiểm tra xem có phải là số thực không
-            {
-                if (student1.DiemVan >= 0 && student1.DiemVan <= 10) // Kiểm tra xem điểm có trong khoảng 0-10 không
-                {
-                    break; // Nếu nhập hợp lệ, thoát khỏi vòng lặp
-                }
-                else
-                {
-                    Console.WriteLine("Diem van khong hop le. Vui long nhap lai (Diem van phai tu 0 den 10).");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Diem van khong hop le. Vui long nhap lai (Diem Van phai la so).");
-            }
-            Console.Write("Hay nhap diem van cua sinh vien 1: "); // Nếu không hợp lệ, yêu cầu nhập lại
-        }
+        student1.DiemVan = GetValidGrade();
         Console.Write("Hay nhap diem anh cua sinh vien 1: ");
-        while (true)
-        {
-            if (float.TryParse(Console.ReadLine(), out student1.DiemAnh)) // Kiểm tra xem có phải là số thực không
-            {
-                if (student1.DiemAnh >= 0 && student1.DiemAnh <= 10) // Kiểm tra xem điểm có trong khoảng 0-10 không
-                {
-                    break; // Nếu nhập hợp lệ, thoát khỏi vòng lặp
-                }
-                else
-                {
-                    Console.WriteLine("Diem anh khong hop le. Vui long nhap lai (Diem anh phai tu 0 den 10).");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Diem anh khong hop le. Vui long nhap lai (Diem Van phai la so).");
-            }
-            Console.Write("Hay nhap diem anh cua sinh vien 1: "); // Nếu không hợp lệ, yêu cầu nhập lại
-        }
-        Students.Add(student1);
+        student1.DiemAnh = GetValidGrade();
+        studentManager.AddStudent(student1);
 
         Student student2 = new Student();
         Console.Write("Hay nhap ten sinh vien 2: ");
-        student2.Name = Console.ReadLine();
+        while (true)
+        {
+            student2.Name = Console.ReadLine();  // Nhập tên sinh viên
+            if (!string.IsNullOrEmpty(student2.Name))  // Kiểm tra xem tên có rỗng không
+            {
+                break;  // Nếu tên hợp lệ, thoát khỏi vòng lặp
+            }
+            else
+            {
+                Console.WriteLine("Ten sinh vien khong hop le. Vui long nhap lai!");
+                Console.Write("Hay nhap ten sinh vien 2: ");  // Yêu cầu nhập lại tên
+            }
+        }
         Console.Write("Hay nhap tuoi cua sinh vien 2: ");
         while (true)
         {
@@ -145,72 +149,39 @@ class Program
             }
         }
         Console.Write("Hay nhap diem toan cua sinh vien 2: ");
-        while (true)
-        {
-            if (float.TryParse(Console.ReadLine(), out student2.DiemToan)) // Kiểm tra xem có phải là số thực không
-            {
-                if (student2.DiemToan >= 0 && student2.DiemToan <= 10) // Kiểm tra xem điểm có trong khoảng 0-10 không
-                {
-                    break; // Nếu nhập hợp lệ, thoát khỏi vòng lặp
-                }
-                else
-                {
-                    Console.WriteLine("Diem Toan khong hop le. Vui long nhap lai (Diem Toan phai tu 0 den 10).");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Diem Toan khong hop le. Vui long nhap lai (Diem Toan phai la so).");
-            }
-            Console.Write("Hay nhap diem toan cua sinh vien 2: "); // Nếu không hợp lệ, yêu cầu nhập lại
-        }
+        student2.DiemToan = GetValidGrade();
         Console.Write("Hay nhap diem van cua sinh vien 2: ");
-        while (true)
-        {
-            if (float.TryParse(Console.ReadLine(), out student2.DiemVan)) // Kiểm tra xem có phải là số thực không
-            {
-                if (student2.DiemVan >= 0 && student2.DiemVan <= 10) // Kiểm tra xem điểm có trong khoảng 0-10 không
-                {
-                    break; // Nếu nhập hợp lệ, thoát khỏi vòng lặp
-                }
-                else
-                {
-                    Console.WriteLine("Diem van khong hop le. Vui long nhap lai (Diem van phai tu 0 den 10).");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Diem van khong hop le. Vui long nhap lai (Diem Van phai la so).");
-            }
-            Console.Write("Hay nhap diem van cua sinh vien 2: "); // Nếu không hợp lệ, yêu cầu nhập lại
-        }
+        student2.DiemVan = GetValidGrade();
         Console.Write("Hay nhap diem anh cua sinh vien 2: ");
+        student2.DiemAnh = GetValidGrade();
+        studentManager.AddStudent(student2);
+
+        studentManager.DisplayAllStudent();
+        studentManager.GetAverageGrade();
+    }
+    public static float GetValidGrade()
+    {
+        float grade;
         while (true)
         {
-            if (float.TryParse(Console.ReadLine(), out student2.DiemAnh)) // Kiểm tra xem có phải là số thực không
+            if (float.TryParse(Console.ReadLine(), out grade))
             {
-                if (student2.DiemAnh >= 0 && student2.DiemAnh <= 10) // Kiểm tra xem điểm có trong khoảng 0-10 không
+                if (grade >= 0 && grade <= 10)
                 {
-                    break; // Nếu nhập hợp lệ, thoát khỏi vòng lặp
+                    break;
                 }
                 else
                 {
-                    Console.WriteLine("Diem anh khong hop le. Vui long nhap lai (Diem anh phai tu 0 den 10).");
+                    Console.WriteLine("Diem khong hop le, vui long nhap lai (Diem phai tu 0 den 10).");
                 }
             }
             else
             {
-                Console.WriteLine("Diem anh khong hop le. Vui long nhap lai (Diem Van phai la so).");
+                Console.WriteLine("Diem khong hop le, vui long nhap lai (Diem phai la so).");
             }
-            Console.Write("Hay nhap diem anh cua sinh vien 2: "); // Nếu không hợp lệ, yêu cầu nhập lại
+            Console.Write("Vui long nhap lai diem: ");
         }
-        Students.Add(student2);
-
-        foreach (Student student in Students) 
-        {
-            student.DisplayAllStudent();
-            student.Getresult();
-            Console.WriteLine();
-        }
+        return grade;
     }
+
 }
